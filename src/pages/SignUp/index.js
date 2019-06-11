@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { StatusBar } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
-import api from '~/services/api';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import LoginActions from '~/store/ducks/auth';
 
 import {
   Container,
@@ -12,19 +14,16 @@ import {
   InputLastName,
   InputEmail,
   InputPassword,
-  Error,
   SignUpButton,
   SignUpTextButton,
   SignInLink,
   SignInLinkText,
-  Success,
 } from './styles';
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
-      dispatch: PropTypes.func,
     }).isRequired,
     signUpRequest: PropTypes.func.isRequired,
   };
@@ -149,3 +148,10 @@ export default class SignUp extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
+export default connect(
+ null,
+  mapDispatchToProps,
+)(SignUp);
+

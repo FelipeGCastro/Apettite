@@ -86,7 +86,6 @@ class Login extends Component {
           onChangeText={this.handlePasswordChange}
           autoCapitalize="none"
           placeholder="Digite sua senha"
-          autoFocus
           returnKeyType="send"
           secureTextEntry
           onSubmitEditing={() => this.handleSignInPress}
@@ -103,11 +102,8 @@ class Login extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  error: state.error,
-});
 const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(Login);

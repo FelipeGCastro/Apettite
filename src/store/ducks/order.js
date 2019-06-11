@@ -4,21 +4,17 @@ import Immutable from 'seamless-immutable';
 /* Types & Action Creators */
 
 const { Types, Creators } = createActions({
-  loadRequest: null,
-  loadSuccess: ['data'],
-  createProduct: ['name', 'description', 'price'],
-  loadProductRequest: ['productId'],
-  loadProductSuccess: ['productData'],
+  loadOrderRequest: null,
+  loadOrderSuccess: ['data'],
 });
 
-export const ProductsTypes = Types;
+export const OrderTypes = Types;
 export default Creators;
 
 /* Initial State */
 
 export const INITIAL_STATE = Immutable({
   data: [],
-  productData: [],
 });
 
 /* Reducers */
@@ -29,6 +25,5 @@ export const INITIAL_STATE = Immutable({
 /* Reducers to types */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.LOAD_SUCCESS]: (state, { data }) => state.merge({ data }),
-  [Types.LOAD_PRODUCT_SUCCESS]: (state, { productData }) => state.merge({ productData }),
+  [Types.LOAD_ORDER_SUCCESS]: (state, { data }) => state.merge({ data }),
 });

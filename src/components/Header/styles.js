@@ -12,3 +12,4 @@ export const Container = styled.View`
 export const LogoImage = styled.Image`
   width: 90px;
 `;
+export const IconButton = styled.TouchableOpacity``;

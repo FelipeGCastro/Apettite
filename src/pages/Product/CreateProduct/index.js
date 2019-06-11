@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import api from '~/services/api';
+
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LoginActions from '~/store/ducks/auth';
+import ProductsActions from '~/store/ducks/products';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Modal from '~/components/Modal'
+
 import {
-  Container,
+  
   ProductTitle,
   ProductDescription,
   ProductPrice,
   CreateButton,
   CreateTextButton,
-  IconButton,
   Error,
 } from './styles';
 
 class CreateProduct extends Component {
   static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func,
-    }).isRequired,
+    createProduct: PropTypes.func.isRequired,
   };
 
   state = {
@@ -31,7 +29,6 @@ class CreateProduct extends Component {
     price: '',
     error: '',
   };
-
 
   handleTitleChange = (name) => {
     this.setState({ name });
@@ -46,43 +43,31 @@ class CreateProduct extends Component {
   };
 
   handleCreatePress = async () => {
-    const { name, description, price } = this.state;
-    const { navigation } = this.props;
-    if (name.length === 0 || description.length === 0 || price.length === 0) {
-      this.setState({ error: 'Preencha usuário e senha para continuar!' }, () => false);
-    } else {
-      try {
-        await api.post('/products', {
-          name,
-          description,
-          price,
-        });
-        navigation.navigate('Main');
-      } catch (err) {
-        this.setState({ error: 'Houve um problema com a criação de produtos!' });
-        console.tron.log(err);
-      }
-    }
+    const { name, description, price} = this.state;
+    const { createProduct, onRequestClose } = this.props;
+
+    await createProduct(name, description, price);
+
+    onRequestClose();
   };
 
   render() {
     const {
       name, price, description, error,
     } = this.state;
-    const { navigation } = this.props;
+    const {  visible, onRequestClose } = this.props;
     return (
-      <Container>
-        <IconButton onPress={() => navigation.navigate('Main')}>
-          <Icon name="chevron-left" size={20} />
-        </IconButton>
+      <Modal visible={visible} onRequestClose={onRequestClose}>
+      
 
         <ProductTitle
           value={name}
           onChangeText={this.handleTitleChange}
           autoCorrect={false}
+          underlineColorAndroid="transparent"
           placeholder="Nome do Produto"
           returnKeyType="next"
-          onSubmitEditing={() => this.ProductDescription.focus()}
+          onSubmitEditing={() => this.ProductPrice.focus()}
           blurOnSubmit={false}
         />
 
@@ -94,9 +79,10 @@ class CreateProduct extends Component {
           keyboardType="number-pad"
           onChangeText={this.handlePriceChange}
           autoCorrect={false}
+          underlineColorAndroid="transparent"
           placeholder="Valor do Produto"
           returnKeyType="next"
-          onSubmitEditing={() => this.email.focus()}
+          onSubmitEditing={() => this.ProductDescription.focus()}
           blurOnSubmit={false}
         />
         <ProductDescription
@@ -106,24 +92,25 @@ class CreateProduct extends Component {
           value={description}
           onChangeText={this.handleDescriptionChange}
           autoCorrect={false}
+          underlineColorAndroid="transparent"
           placeholder="Descreva o seu produto, ex: Feito com muito carinho com leite, agua..."
           returnKeyType="next"
-          onSubmitEditing={() => this.email.focus()}
+          onSubmitEditing={() => this.handleCreatePress}
           blurOnSubmit={false}
         />
         {error.length !== 0 && <Error>{error}</Error>}
         <CreateButton onPress={this.handleCreatePress}>
           <CreateTextButton>Criar</CreateTextButton>
         </CreateButton>
-      </Container>
+        <CreateButton onPress={onRequestClose}>
+          <CreateTextButton>Cancelar</CreateTextButton>
+        </CreateButton>
+      </Modal>
     );
   }
 }
-const mapStateToProps = state => ({
-  error: state.error,
-});
-const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(ProductsActions, dispatch);
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
-)(CreateProduct)
+)(CreateProduct);

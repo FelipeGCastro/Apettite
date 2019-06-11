@@ -6,6 +6,24 @@ export const Container = styled.View`
   align-items: center;
   justify-content: flex-start;
 `;
+export const Header = styled.View`
+  background: #ff6347;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+`;
+export const IconButton = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.6,
+})`
+  padding-left: 15px;
+  padding-right: 50px;
+`;
+export const LogoImage = styled.Image`
+  width: 90px;
+  padding-left: 100px;
+`;
 export const ProductTitle = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`
@@ -59,7 +77,7 @@ export const CreateButton = styled.TouchableOpacity`
   justify-content: center;
   margin-top: 10px;
 `;
-export const IconButton = styled.TouchableOpacity``;
+
 export const CreateTextButton = styled.Text`
   color: #fff;
   font-size: 18px;
