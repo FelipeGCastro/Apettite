@@ -6,6 +6,8 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   loadOrderRequest: null,
   loadOrderSuccess: ['data'],
+  loadProductOrders: ['productId'],
+  loadOrdersSuccess: ['ordersData'],
 });
 
 export const OrderTypes = Types;
@@ -15,6 +17,7 @@ export default Creators;
 
 export const INITIAL_STATE = Immutable({
   data: [],
+  ordersData: [],
 });
 
 /* Reducers */
@@ -26,4 +29,5 @@ export const INITIAL_STATE = Immutable({
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_ORDER_SUCCESS]: (state, { data }) => state.merge({ data }),
+  [Types.LOAD_ORDERS_SUCCESS]: (state, { ordersData }) => state.merge({ ordersData }),
 });

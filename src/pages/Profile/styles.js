@@ -44,12 +44,9 @@ export const LogoutButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
-  width: 90%;
+  width: 80px;
 `;
 export const LogoutTextButton = styled.Text`
   color: #fff;
   font-size: 18px;
 `;
-
-
-

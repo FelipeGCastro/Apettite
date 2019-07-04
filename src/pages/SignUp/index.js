@@ -7,9 +7,13 @@ import { StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LoginActions from '~/store/ducks/auth';
+import ImagePicker from 'react-native-image-picker';
 
 import {
   Container,
+  SelectButton,
+  SelectButtonText,
+  PerfilImage,
   InputFirstName,
   InputLastName,
   InputEmail,
@@ -34,6 +38,8 @@ class SignUp extends Component {
     email: '',
     password: '',
     passwordConfirmation: '',
+    preview: null,
+    image: null,
   };
 
   handlefirstNameChange = (firstName) => {
@@ -63,20 +69,70 @@ class SignUp extends Component {
 
   handleSignUpPress = async () => {
     const {
-      firstName, lastName, email, password, passwordConfirmation,
+      firstName, lastName, email, password, passwordConfirmation, image,
     } = this.state;
     const { signUpRequest } = this.props;
-    signUpRequest(firstName, lastName, email, password, passwordConfirmation);
+    const data = new FormData()
+
+    data.append('files', image);
+    data.append('first_name', firstName);
+    data.append('last_name', lastName);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('password_confirmation', passwordConfirmation);
+    
+    signUpRequest(data);
+  };
+
+  handleSelectImage = () => {
+    ImagePicker.showImagePicker(
+      {
+        title: 'Selecionar imagem',
+        takePhotoButtonTitle: 'Tirar Uma Foto',
+        chooseFromLibraryButtonTitle: 'Escolhar da sua Galeria',
+      },
+      (upload) => {
+        if (upload.error) {
+          console.tron.log('Error');
+        } else if (upload.didCancel) {
+          console.tron.log('Used Canceled');
+        } else {
+          const preview = {
+            uri: `data:image/jpeg;base64,${upload.data}`,
+          };
+          let prefix;
+          let ext;
+
+          if (upload.fileName) {
+            [prefix, ext] = upload.fileName.split('.');
+            ext = ext.toLowerCase() === 'heic' ? 'jpg' : ext;
+          } else {
+            prefix = new Date().getTime();
+            ext = 'jpg';
+          }
+
+          const image = {
+            uri: upload.uri,
+            type: upload.type,
+            name: `${prefix}.${ext}`,
+          };
+          this.setState({ preview, image });
+        }
+      },
+    );
   };
 
   render() {
     const {
-      firstName, lastName, email, password, passwordConfirmation,
+      firstName, lastName, email, password, passwordConfirmation, preview,
     } = this.state;
     return (
       <Container>
         <StatusBar hidden />
-
+        <SelectButton onPress={this.handleSelectImage}>
+          <SelectButtonText>Selecionar Foto Perfil</SelectButtonText>
+        </SelectButton>
+        {preview && <PerfilImage source={preview} />}
         <InputFirstName
           value={firstName}
           onChangeText={this.handlefirstNameChange}
@@ -135,7 +191,7 @@ class SignUp extends Component {
           placeholder="Repita sua senha"
           secureTextEntry
           returnKeyType="next"
-          onSubmitEditing={this.handleSignUpPress}
+          onSubmitEditing={() => this.handleSignUpPress()}
         />
 
         <SignUpButton onPress={this.handleSignUpPress}>
@@ -151,7 +207,6 @@ class SignUp extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
 export default connect(
- null,
+  null,
   mapDispatchToProps,
 )(SignUp);
-

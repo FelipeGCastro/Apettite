@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+// import AsyncStorage from '@react-native-community/async-storage';
 import createNavigator from './routes';
 import NavigationService from './services/navigation';
-
 // import { Container } from './styles';
 
 class App extends Component {

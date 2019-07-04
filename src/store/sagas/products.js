@@ -13,11 +13,13 @@ export function* load() {
   }
 }
 
-export function* createProduct({ name, description, price }) {
-  console.tron.log(name, description, price);
+export function* createProduct({
+  name, description, price, files,
+}) {
+  console.tron.log(files, 'saga files');
   try {
-    yield call(api.post, 'products', { name, description, price });
-
+    const response = yield call(api.post, 'products', { name, description, price });
+    yield call(api.post, `products/${response.data.id}/files`, files);
     yield put(toastActions.displayInfo('Foi criado com sucesso!'));
     yield put(ProductsActions.loadRequest());
   } catch (err) {

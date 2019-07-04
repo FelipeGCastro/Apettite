@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
@@ -7,7 +8,31 @@ export const Container = styled.View`
   justify-content: center;
   padding: 30px;
 `;
+export const SelectButton = styled.TouchableOpacity`
+  background: #fff;
+  border-color: #333;
+  border-radius: 4px;
+  border-style: dashed;
+  border-width: 3px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
 
+export const SelectButtonText = styled.Text`
+  color: #808080;
+  font-size: 18px;
+`;
+
+export const PerfilImage = styled.Image`
+  width: 120px;
+  height: 120px;
+  margin-bottom: 10px;
+  align-self: center;
+  border-radius: 60px;
+  padding: 0;
+`;
 export const InputFirstName = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`

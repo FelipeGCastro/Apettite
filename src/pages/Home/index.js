@@ -8,8 +8,8 @@ import OrderActions from '~/store/ducks/order';
 
 import UpdateOrder from '~/pages/Order/UpdateOrder';
 
-import Orders from './Orders'
-import MyProducts from './MyProducts'
+import Orders from './Orders';
+import MyProducts from './MyProducts';
 
 import api from '~/services/api';
 import {
@@ -23,9 +23,16 @@ import {
   ProviderButton,
   ProviderTextButton,
 } from './styles';
-import CreateProduct from '~/pages/Product/CreateProduct';
 
 class Home extends Component {
+  static navigationOptions =({ navigation }) => ({
+    headerRight: (
+      <CreateProductButton onPress={() => navigation.navigate('CreateProduct')}>
+        <CreateProductTextButton>P+</CreateProductTextButton>
+      </CreateProductButton>
+    )
+  })
+
   static propTypes = {
     orders: PropTypes.shape({
       navigate: PropTypes.func,
@@ -36,7 +43,6 @@ class Home extends Component {
   state = {
     productsTab: true,
     isModalOpen: false,
-    isOrderModalOpen: false,
     product: '',
     orderId: '',
     products: []
@@ -48,27 +54,19 @@ class Home extends Component {
     await loadOrderRequest();
   };
 
-  toggleModalOpen = (type) => {
-    if (type === 'product') {
+  toggleModalOpen = () => {
+   
       this.setState({ isModalOpen: true });
-    }
-    if (type === 'order') {
-      this.setState({ isOrderModalOpen: true });
-    }
+   
 
   };
 
   toggleModalClosed = () => {
-    const { isModalOpen, isOrderModalOpen } = this.state;
+    const { isModalOpen } = this.state;
 
-    if (isModalOpen) {
+   
       this.setState({ isModalOpen: false });
-    }
-
-    if (isOrderModalOpen) {
-      this.setState({ isOrderModalOpen: false });
-    }
-
+  
   };
 
   handleOrderPress = async (product, orderId) => {
@@ -88,14 +86,13 @@ class Home extends Component {
       const response = await api.get('myproducts');
 
       this.setState({ products: response , productsTab: false });
-      console.tron.log( response.data, response )
     } catch (error) {
 
     }
   }
 
   render() {
-    const { isModalOpen, isOrderModalOpen,product, products,orderId, productsTab } = this.state;
+    const { isModalOpen, product, products,orderId, productsTab } = this.state;
     const { orders } = this.props;
     const dataList = productsTab ? orders : products;
     return (
@@ -116,13 +113,8 @@ class Home extends Component {
           numColumns={1}
           renderItem={({ item: data }) => (productsTab ? <Orders data={data} func={this.handleOrderPress} /> : <MyProducts data={data} />) }
         />
-
-        <CreateProductButton onPress={() => this.toggleModalOpen('product')}>
-          <CreateProductTextButton>Criar um produto</CreateProductTextButton>
-        </CreateProductButton>
-        <CreateProduct visible={isModalOpen} onRequestClose={this.toggleModalClosed} />
         <UpdateOrder
-          visible={isOrderModalOpen}
+          visible={isModalOpen}
           product={product}
           orderId={orderId}
           onRequestClose={this.toggleModalClosed}

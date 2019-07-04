@@ -6,7 +6,7 @@ import { AuthTypes } from '~/store/ducks/auth';
 import { OrderTypes } from '~/store/ducks/order';
 
 import { load, createProduct, loadProduct } from './products';
-import { loadOrders } from './order';
+import { loadOrders, loadProductOrders } from './order';
 
 import { loadUsers } from './users';
 import { login, init, signUp, signOut } from './auth';
@@ -25,5 +25,9 @@ export default function* rootSaga() {
     takeLatest(UsersTypes.LOAD_USERS_REQUEST, loadUsers),
 
     takeLatest(OrderTypes.LOAD_ORDER_REQUEST, loadOrders),
+    takeLatest(OrderTypes.LOAD_PRODUCT_ORDERS, loadProductOrders),
+    
+
+    
   ]);
 }

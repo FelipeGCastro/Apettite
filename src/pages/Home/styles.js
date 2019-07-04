@@ -9,12 +9,12 @@ export const Container = styled.View`
 `;
 export const CreateProductButton = styled.TouchableOpacity`
   background: #ff6347;
-  border-radius: 4px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
-  width: 90%;
+  margin-right: 20px;
 `;
 export const CreateProductTextButton = styled.Text`
   color: #fff;
@@ -22,7 +22,10 @@ export const CreateProductTextButton = styled.Text`
 `;
 
 export const OrderList = styled.FlatList.attrs({
-  contentContainerStyle: { paddingTop: getStatusBarHeight(), paddingBottom: 15 },
+  contentContainerStyle: {
+    // paddingTop: getStatusBarHeight(),
+    paddingBottom: 15,
+  },
 })``;
 // export const PageTitle = styled.Text`
 //   align-self: center;

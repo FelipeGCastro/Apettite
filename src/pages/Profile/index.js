@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LoginActions from '~/store/ducks/auth';
+import AuthActions from '~/store/ducks/auth';
+import api from '~/services/api';
 
 import {
   Container,
@@ -23,6 +24,16 @@ class Profile extends Component {
     signOut: PropTypes.func.isRequired,
   };
 
+  state = {
+    user: null,
+  };
+
+  componentDidMount = async () => {
+    const response = await api.get('sessions');
+
+    await this.setState({ user: response.data });
+  };
+
   handleLogout = () => {
     const { signOut } = this.props;
 
@@ -30,23 +41,30 @@ class Profile extends Component {
   };
 
   render() {
+    const { user } = this.state;
     return (
       <Container>
-        <AvatarUser alt="User Avatar" source={Perfil} />
-        <NameUser>Nome:</NameUser>
-        <ProductCount>Quantos Produtos:</ProductCount>
-        <CustomersCount>Quantos clientes:</CustomersCount>
-        <LogoutButton onPress={this.handleLogout}>
-          <LogoutTextButton>Sair</LogoutTextButton>
-        </LogoutButton>
+        {user && (
+          <Container>
+            <AvatarUser alt="User Avatar" source={{ uri: user.url }} />
+            <NameUser>Nome: {`${user.first_name} ${user.last_name}`}</NameUser>
+            <ProductCount>Quantos Produtos:</ProductCount>
+            <CustomersCount>Quantos clientes:</CustomersCount>
+            <LogoutButton onPress={this.handleLogout}>
+              <LogoutTextButton>Sair</LogoutTextButton>
+            </LogoutButton>
+          </Container>
+        )}
       </Container>
     );
   }
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
+const mapStateToProps = state => ({
+  user: state.userLogin,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Profile);

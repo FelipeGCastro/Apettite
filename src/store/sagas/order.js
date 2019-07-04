@@ -14,3 +14,13 @@ export function* loadOrders() {
     );
   }
 }
+export function* loadProductOrders({ productId }) {
+  try {
+    const response = yield call(api.get, `productorders/${productId}`);
+    yield put(OrderActions.loadOrdersSuccess(response.data));
+  } catch (err) {
+    yield put(
+      toastActions.displayError('Algo errado ao carregar suas Ordens, tente novamente mais tarde!'),
+    );
+  }
+}

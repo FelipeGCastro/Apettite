@@ -9,19 +9,46 @@ import IconFood from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Search from '~/pages/Search';
+import Product from '~/pages/Search/Product';
+import { Image } from 'react-native';
 import Home from '~/pages/Home';
 import Notification from '~/pages/Notification';
 import Profile from '~/pages/Profile';
 import ShowProduct from '~/pages/Product/ShowProduct';
+import CreateProduct from '~/pages/Product/CreateProduct';
+import User from '~/pages/User';
+import Offer from '~/pages/Offer';
+import logo from '~/assets/logo.png';
 
 const HomeStack = createStackNavigator(
   {
     Home,
-
     ShowProduct,
+    CreateProduct,
+    Product,
+    User,
+    Offer,
   },
   {
-    headerMode: 'none',
+    initialRouteName: 'Home',
+    defaultNavigationOptions: {
+      headerTintColor: '#000',
+      headerTitle: (
+        <Image
+          style={{
+            marginHorizontal: 20,
+            backgroundColor: '#ff6347',
+            width: 80,
+            height: 40,
+          }}
+          source={logo}
+          resizeMode="contain"
+        />
+      ),
+      headerBackTitle: null,
+      headerTitleStyle: { flex: 1, textAlign: 'center' },
+    },
+    mode: 'modal',
   },
 );
 
@@ -68,6 +95,9 @@ const TabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
+      style: {
+        backgroundColor: '#fff',
+      },
     },
   },
 );
